@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <version>1.0</version>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.creditease.ns4.gear</groupId>
+    <artifactId>ns4_gear_watchdog</artifactId>
+
+
+    <properties>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <ns_transporter.version>0.8.3-SNAPSHOT</ns_transporter.version>
+        <ns_commons.version>0.8.3-SNAPSHOT</ns_commons.version>
+        <ns_log.version>1.22</ns_log.version>
+        <flume.version>1.7.0</flume.version>
+        <elasticsearch.version>6.5.1</elasticsearch.version>
+    </properties>
+
+    <dependencies>
+        <!-- javassist -->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.16.1-GA</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- jmxtools -->
+        <dependency>
+            <groupId>com.sun.jdmk</groupId>
+            <artifactId>jmxtools</artifactId>
+            <version>1.2.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/rely/jmx/jmxtools-1.2.1.jar</systemPath>
+        </dependency>
+        <!-- mail -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.5.0-b01</version>
+        </dependency>
+        <!-- ns_transporter -->
+        <dependency>
+            <groupId>com.creditease.ns.framework</groupId>
+            <artifactId>ns_transporter</artifactId>
+            <version>${ns_transporter.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>provided</scope>
+        </dependency>
+        <!-- ns framework > ns_commons -->
+        <dependency>
+            <groupId>com.creditease.ns.framework</groupId>
+            <artifactId>ns_commons</artifactId>
+            <version>${ns_commons.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>provided</scope>
+        </dependency>
+        <!-- ns_log -->
+        <dependency>
+            <groupId>com.creditease.ns</groupId>
+            <artifactId>ns_log</artifactId>
+            <version>${ns_log.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>redis.clients</groupId>
+                    <artifactId>jedis</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>compile</scope>
+        </dependency>
+        <!-- fast json-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.56</version>
+        </dependency>
+        <!-- fast json end-->
+        <!--flume begin-->
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+        <!-- es transport -->
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>transport</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flume</groupId>
+            <artifactId>flume-ng-core</artifactId>
+            <version>${flume.version}</version>
+            <exclusions>
+                <!--避免与logback冲突-->
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>log4j-over-slf4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.thrift</groupId>
+                    <artifactId>libthrift</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.thrift</groupId>
+            <artifactId>libthrift</artifactId>
+            <version>0.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flume</groupId>
+            <artifactId>flume-ng-node</artifactId>
+            <version>${flume.version}</version>
+            <exclusions>
+                <exclusion>
+                    <!--避免与logback冲突-->
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--flume end-->
+        <dependency>
+            <groupId>com.creditease.ns.framework</groupId>
+            <artifactId>ns_mq</artifactId>
+            <version>0.8.3-SNAPSHOT</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.20</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>5.1.5.RELEASE</version>
+        </dependency>
+
+    </dependencies>
+
+    <profiles>
+        <!-- 开发环境 -->
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>dev</env>
+            </properties>
+            <build>
+                <filters>
+                    <filter>src/main/resources/filter/dev.properties</filter>
+                </filters>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <!-- 测试环境 -->
+        <profile>
+            <id>test</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <env>test</env>
+            </properties>
+            <build>
+                <filters>
+                    <filter>src/main/resources/filter/test.properties</filter>
+                </filters>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <!-- 生产环境 -->
+        <profile>
+            <id>prod</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <env>prod</env>
+            </properties>
+            <build>
+                <filters>
+                    <filter>src/main/resources/filter/prod.properties</filter>
+                </filters>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+    </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <!-- monitor 包-jar -->
+                    <execution>
+                        <id>monitor</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <classifier>monitor</classifier>
+                            <includes>
+                                <include>**/com/creditease/ns4/gear/watchdog/monitor/**</include>
+                                <include>**/com/creditease/ns4/gear/watchdog/common/**</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <!-- plugin 包-jar -->
+                    <execution>
+                        <id>plugin</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <classifier>plugin</classifier>
+                            <includes>
+                                <include>**/com/creditease/ns4/gear/watchdog/plugin/**</include>
+                                <include>**/com/creditease/ns4/gear/watchdog/common/**</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- 拷贝依赖包 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.5.1</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <echo>Building Watchdog START....</echo>
+                                <delete dir="target/watchdog"/>
+
+                                <mkdir dir="target/watchdog"/>
+                                <mkdir dir="target/watchdog/log"/>
+                                <mkdir dir="target/watchdog/bin"/>
+                                <mkdir dir="target/watchdog/config"/>
+                                <mkdir dir="target/watchdog/lib"/>
+                                <mkdir dir="target/watchdog/template"/>
+
+                                <copy todir="target/watchdog/config">
+                                    <fileset dir="target/classes/config"/>
+                                </copy>
+
+                                <copy todir="target/watchdog/template">
+                                    <fileset dir="target/classes/template"/>
+                                </copy>
+
+                                <copy todir="target/watchdog">
+                                    <fileset file="target/classes/logback.xml"/>
+                                </copy>
+
+                                <!-- WATCHDOG BIN -->
+                                <copy todir="target/watchdog/bin">
+                                    <fileset dir="bin"/>
+                                </copy>
+
+                                <mkdir dir="target/watchdog/lib/monitor"/>
+                                <copy todir="target/watchdog/lib/monitor">
+                                    <fileset file="target/ns4_gear_watchdog-1.0-monitor.jar"/>
+                                    <fileset dir="target/lib"/>
+                                </copy>
+                                <delete>
+                                    <fileset dir="target/watchdog/lib/monitor" includes="javassist*.jar"/>
+                                    <fileset dir="target/watchdog/lib/monitor" includes="ns_commons-*.jar"/>
+                                    <fileset dir="target/watchdog/lib/monitor" includes="ns_transporter-*.jar"/>
+                                </delete>
+
+                                <mkdir dir="target/watchdog/lib/plugin"/>
+                                <copy todir="target/watchdog/lib/plugin">
+                                    <fileset file="target/ns4_gear_watchdog-1.0-plugin.jar"/>
+                                </copy>
+
+                                <!-- ZIP -->
+                                <copy todir="target/tempbuild/watchdog">
+                                    <fileset dir="target/watchdog"/>
+                                </copy>
+
+                                <tstamp>
+                                    <format property="current.date.time" pattern="yyyyMMddHHmmss"/>
+                                </tstamp>
+
+                                <zip destfile="target/watchdog_${version}_${current.date.time}.zip">
+                                    <zipfileset dir="target/tempbuild"/>
+                                </zip>
+
+                                <checksum file="target/watchdog_${version}_${current.date.time}.zip"
+                                          forceOverwrite="yes" algorithm="MD5" fileext=".MD5"></checksum>
+
+                                <delete dir="target/tempbuild"/>
+                                <delete>
+                                    <fileset dir="target/" includes="ns4_gear_*.jar"/>
+                                </delete>
+                                <echo>Building Watchdog END</echo>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

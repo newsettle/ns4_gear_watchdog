@@ -1,0 +1,69 @@
+<configuration>
+    <conversionRule conversionWord="exp" converterClass="com.creditease.ns.log.converter.NSThrowableConvert"/>
+    <conversionRule conversionWord="cl"
+                    converterClass="com.creditease.ns.log.converter.ClassNameAndLineNumberConverter"/>
+    <conversionRule conversionWord="nmsg" converterClass="com.creditease.ns.log.converter.NSMessageContentConverter"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{MMddHHmmss.SSS} [%t] %.-1level %cl %nmsg %exp%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="watchdog" class="com.creditease.ns.log.appender.NSLogRollingFileAppender">
+        <file>./watchdog/log/watchdog.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./watchdog/log/watchdog.log.%d{yyyy-MM-dd-HH}</fileNamePattern>
+            <maxHistory>72</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{MMddHHmmss.SSS} [%t] %.-1level %cl %nmsg %exp%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="watchdog.plugin" class="com.creditease.ns.log.appender.NSLogRollingFileAppender">
+        <file>./watchdog/log/watchdog_plugin.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./watchdog/log/watchdog_plugin.log.%d{yyyy-MM-dd-HH}</fileNamePattern>
+            <maxHistory>72</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{MMddHHmmss.SSS} [%t] %.-1level %cl %nmsg %exp%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="watchdog.collect" class="com.creditease.ns.log.appender.NSLogRollingFileAppender">
+        <file>./watchdog/log/watchdog_collect.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./watchdog/log/watchdog_collect.log.%d{yyyy-MM-dd-HH}</fileNamePattern>
+            <maxHistory>72</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{MMddHHmmss.SSS} [%t] %.-1level %cl %nmsg %exp%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="nsg.watchdog" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="watchdog"/>
+    </logger>
+
+    <logger name="nsg.watchdog.plugin" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="watchdog.plugin"/>
+    </logger>
+
+    <logger name="nsg.watchdog.collect" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="watchdog.collect"/>
+    </logger>
+
+    <logger name="org.apache.flume" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="watchdog.collect"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

@@ -1,0 +1,1 @@
+package com.creditease.ns4.gear.watchdog.jmx.test;import java.util.Date;/** * @author * @description * @date 2019/3/4 */public class OtherProcess {    public static void main(String[] args) throws InterruptedException {        while (true) {            Thread.sleep(1000);            System.out.println(new Date());        }    }}
